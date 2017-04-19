@@ -1,0 +1,47 @@
+﻿<h1>Ski Day Listing - Server Paging</h1>
+
+
+<p *ngIf="!loading">This component demonstrates server-side pagination. A single page of data is retrieved from the Web API end-point.</p>
+
+
+<div *ngIf="loading">Loading...</div>
+
+<h3 class="alert-danger">{{errorMsg}}</h3>
+<table class='table table-striped' *ngIf="data">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Resort</th>
+            <th>Vertical</th>
+            <th>Partners</th>
+            <th>Snow24</th>
+            <th>Snow72</th>
+            <th>Temp. (F)</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let day of data | async | paginate: { id: 'server', 
+                                                       itemsPerPage: 5, 
+                                                       currentPage: page, 
+                                                       totalItems: total }">
+            <td>{{ day.skiDate | date: 'shortDate' }}</td>
+            <td>{{ day.resort }}</td>
+            <td>{{ day.vertical | number:'2.0' }}</td>
+            <td>{{ day.partners }}</td>
+            <td>{{ day.newSnow24 }}</td>
+            <td>{{ day.newSnow72 }}</td>
+            <td>{{ day.temperature }}°</td>
+            <td>{{ day.comments }}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="has-text-centered">
+    <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+    <pagination-controls  class="my-pagination" (pageChange)="getPage($event)" id="server">
+        
+    </pagination-controls>
+
+</div>
+
+

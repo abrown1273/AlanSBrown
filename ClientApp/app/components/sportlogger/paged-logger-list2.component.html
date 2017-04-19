@@ -1,0 +1,60 @@
+﻿<h1>Ski Day Listing - Client Paging</h1>
+
+
+<p *ngIf="!loading">This component demonstrates client-side pagination. All data is pulled from the Web API end-point.</p>
+
+
+<div *ngIf="loading">Loading...</div>
+
+<h3 class="alert-danger">{{errorMsg}}</h3>
+
+<table class='table table-striped' *ngIf="pagedItems">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Resort</th>
+            <th>Vertical</th>
+            <th>Partners</th>
+            <th>Snow24</th>
+            <th>Snow72</th>
+            <th>Temp. (F)</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let day of pagedItems">
+            <td>{{ day.skiDate | date: 'shortDate' }}</td>
+            <td>{{ day.resort }}</td>
+            <td>{{ day.vertical | number:'2.0' }}</td>
+            <td>{{ day.partners }}</td>
+            <td>{{ day.newSnow24 }}</td>
+            <td>{{ day.newSnow72 }}</td>
+            <td>{{ day.temperature }}°</td>
+            <td>{{ day.comments }}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="has-text-centered">
+    <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+    <!-- pager -->
+    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+    </ul>
+
+</div>
+
+

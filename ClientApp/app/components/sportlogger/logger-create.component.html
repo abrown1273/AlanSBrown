@@ -1,0 +1,100 @@
+﻿<h2>Insert New Ski Day</h2>
+<hr />
+
+<div class="container-fluid">
+    <div class="col-sm-3">
+        <form [formGroup]="sdayForm" (ngSubmit)="onSubmit()" novalidate>
+            <modal-message></modal-message>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label>Date</label>
+                    <my-date-picker [options]="myDatePickerOptions" formControlName="skiDate"></my-date-picker>
+                    <div *ngIf="sdayForm.controls['skiDate'].hasError('required') && sdayForm.controls['skiDate'].touched" class="alert alert-danger">
+                        Please enter a date.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Resort</label>
+                    <select class="form-control" formControlName="resort">
+                        <option value="">--Select Resort--</option>
+                        <option *ngFor="let resort of resorts">{{resort.resortName}}</option>
+                    </select>
+                    <div *ngIf="(sdayForm.controls['resort'].hasError('required') && sdayForm.controls['resort'].touched)
+                          || sdayForm.controls['resort'].value == '--Select Resort--'"
+                         class="alert alert-danger">
+                        Please select a resort.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Vertical</label>
+                    <input type="text" class="form-control" formControlName="vertical" />
+                    <div *ngIf="sdayForm.controls['vertical'].hasError('required') && sdayForm.controls['vertical'].touched" class="alert alert-danger">
+                        Please enter vertical feet skiied.
+                    </div>
+                    <div *ngIf="sdayForm.controls['vertical'].hasError('maxlength')" class="alert alert-danger">
+                        Maximum length is 5 characters. No way you went over 100K!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Partners</label>
+                    <input type="text" class="form-control" formControlName="partners" />
+                    <div *ngIf="sdayForm.controls['partners'].hasError('required') && sdayForm.controls['partners'].touched" class="alert alert-danger">
+                        Please enter your ski partners.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Snow24</label>
+                    <input type="text" class="form-control" formControlName="newsnow24" />
+                    <div *ngIf="sdayForm.controls['newsnow24'].hasError('pattern')" class="alert alert-danger">
+                        Numeric values only
+                    </div>
+                    <div *ngIf="sdayForm.controls['newsnow24'].hasError('maxlength') || sdayForm.controls['newsnow24'].hasError('required')" class="alert alert-danger">
+                        Must be between 1 and 2 characters.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Snow72</label>
+                    <input type="text" class="form-control" formControlName="newsnow72" />
+                    <div *ngIf="sdayForm.controls['newsnow72'].hasError('pattern')" class="alert alert-danger">
+                        Numeric values only
+                    </div>
+                    <div *ngIf="sdayForm.controls['newsnow72'].hasError('maxlength') || sdayForm.controls['newsnow72'].hasError('required')" class="alert alert-danger">
+                        Must be between 1 and 2 characters.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Temperature</label>
+                    <input type="text" class="form-control" formControlName="temperature" />
+                    <div *ngIf="sdayForm.controls['temperature'].hasError('pattern')" class="alert alert-danger">
+                        Numeric values only
+                    </div>
+                    <div *ngIf="sdayForm.controls['temperature'].hasError('maxlength') || sdayForm.controls['temperature'].hasError('required')" class="alert alert-danger">
+                        Must be between 1 and 4 characters.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Comments</label>
+                    <textarea class="form-control" rows="3" formControlName="comments"></textarea>
+                </div>
+                <button [disabled]="!sdayForm.valid" type="submit" class="btn btn-primary">Submit</button>
+                
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-5">
+        <br />
+        <div class="panel panel-primary">
+            <div class="panel-heading">This page showcases:</div>
+            <div class="panel-body">
+                <ul>
+                    <li>Bootstrap datepicker control.</li>
+                    <li>Resort option list populated from the <a href="https://sportlogger.azurewebsites.net/swagger/" target="_blank">Sport Logger Web API.</a></li>
+                    <li>Form values POSTED to the same API.</li>
+                    <li>Angular Form Groups and validation.</li>
+                    <li>A message and error handling modal window.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
