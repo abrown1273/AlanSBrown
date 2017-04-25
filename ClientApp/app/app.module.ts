@@ -8,12 +8,14 @@ import { LoggerListComponent } from './components/sportlogger/logger-list.compon
 import { LoggerCreateComponent } from './components/sportlogger/logger-create.component';
 import { PagedLoggerListComponent } from './components/sportlogger/paged-logger-list.component';
 import { PagedLoggerList2Component } from './components/sportlogger/paged-logger-list2.component';
-import { SkiDayService } from './components/sportlogger/services/sportlogger.service';
+import { SkiDayService } from './components/services/sportlogger.service';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ModalMessage } from './components/modalmsg/modal-message.component';
 import { PaginatePipe, PaginationService, PaginationControlsCmp, IPaginationInstance } from 'ng2-paginate'
-import { PagerService } from './components/sportlogger/services/pager.service';
+import { PagerService } from './components/services/pager.service';
 import { OrderByPipe } from './components/pipes/orderBy'
+import { BlockUIService } from './components/services/blockui.service';
+import { AlertService } from './components/services/alert.service';
 
 import {
     FormsModule,
@@ -24,10 +26,10 @@ import {
     bootstrap: [ AppComponent ],
     declarations: [
         AppComponent,
-        NavMenuComponent,
         LoggerListComponent,
         LoggerCreateComponent,
         ModalMessage,
+        NavMenuComponent,
         OrderByPipe,
         PaginatePipe,
         PaginationControlsCmp,
@@ -51,7 +53,7 @@ import {
         ])
     ],
 
-    providers: [SkiDayService, PagerService, PaginationService]
+    providers: [SkiDayService, PagerService, PaginationService, BlockUIService, AlertService]
 })
 export class AppModule {
 }

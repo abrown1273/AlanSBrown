@@ -4,7 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
-import { SkiDay } from './sportlogger.model';
+import { SkiDayService } from '../services/sportlogger.service';
+import { SkiDay } from '../models/sportlogger.model';
+import { BlockUIService } from '../services/blockui.service';
 
 export interface PagedResponse<T> {
     total: number;
@@ -18,6 +20,9 @@ export interface PagedResponse<T> {
 
 })
 export class PagedLoggerListComponent implements OnInit {
+    public skiDayUrl: string = 'https://sportlogger.azurewebsites.net/api/PagedSkiDayApi/';
+    //public skiDayUrl: string = 'https://localhost:44382/api/PagedSkiDayApi/';
+
     public loading: boolean;
     private errorMsg: string;
 
@@ -25,21 +30,37 @@ export class PagedLoggerListComponent implements OnInit {
     private page: number = 1;
     private total: number;
 
-    constructor(private http: Http) {
+    constructor(private http: Http,
+                private service: SkiDayService,
+                private blockUIService: BlockUIService) {
     }
 
     ngOnInit() {
-        this.getPage(1);
+        this.loadData(1);        
     }
 
-    getPage(p: number) {
-        this.loading = true;
-        this.data = this.http.get("https://sportlogger.azurewebsites.net/api/PagedSkiDayApi/" + p + "/5")
+    loadData(p: number) {
+        this.blockUIService.blockUIEvent.emit({
+            value: true
+        });
+
+        this.data = this.http.get(this.skiDayUrl + p + "/10")
             .do((res: any) => {
                 this.total = res.json().total;
                 this.page = p;
-                this.loading = false;
+                this.blockUIService.blockUIEvent.emit({
+                    value: false
+                });
             })
-            .map((res: any) => res.json().data);
+            .map((res: any) => res.json().data)
+            .catch(this.errorHandler)
+    }
+
+    errorHandler(error: Response) {
+        let errMsg = `HTTP ERROR accessing '${error.url}': ${error.status} - ${error.statusText || ''}`;
+        console.error(errMsg);
+        this.errorMsg = errMsg;
+
+        return Observable.throw(errMsg);
     }
 }

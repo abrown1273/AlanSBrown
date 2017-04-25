@@ -8,3 +8,15 @@
         </div>
     </div>
 </div>
+
+<div *ngIf="blockUI">
+    <div class="in modal-backdrop spinner-overlay"></div>
+    <div class="spinner-message-container" aria-live="assertive" aria-atomic="true">
+        <!--   <div class="spinner-message">loading...</div>-->
+        <div class="loading-message">
+            <img src="/images/loading-spinner-grey.gif" class="rotate90">
+            <span>&nbsp;&nbsp;please wait...</span>
+        </div>
+
+    </div>
+</div>

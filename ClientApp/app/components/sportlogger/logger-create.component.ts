@@ -1,10 +1,10 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IMyOptions } from 'mydatepicker';
-import { Resort } from './sportlogger.model';
-import { SkiDay } from './sportlogger.model';
-import { SkiDayService } from './services/sportlogger.service';
+import { Resort, SkiDay } from '../models/sportlogger.model';
+import { SkiDayService } from '../services/sportlogger.service';
 import { ModalMessage } from '../modalmsg/modal-message.component';
+import { BlockUIService } from '../services/blockui.service';
 import {
     FormBuilder,
     FormGroup,
@@ -34,7 +34,7 @@ export class LoggerCreateComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private service: SkiDayService,
-        private router: Router) { }
+        private blockUIService: BlockUIService) { }
 
     ngOnInit() {
         this.sdayForm = this.formBuilder.group({
@@ -56,6 +56,10 @@ export class LoggerCreateComponent implements OnInit {
     }
 
     onSubmit() {
+        this.blockUIService.blockUIEvent.emit({
+            value: true
+        });
+
         var json = this.sdayForm.value;
         // the date value is part of a form object because of the datepicker
         // reset the value to the formatted version.
@@ -86,10 +90,17 @@ export class LoggerCreateComponent implements OnInit {
         //this.sdayForm.untouched = true;
         //this.sdayForm.untouched;
         //this.sdayForm.reset();
+
+        this.blockUIService.blockUIEvent.emit({
+            value: false
+        });
         this.modalMsg.showMessage("The form was submitted successfully.", "Success", "logger-list");
     }
 
     logError(err) {
+        this.blockUIService.blockUIEvent.emit({
+            value: false
+        });
         this.errorFound = true;
         this.modalMsg.showMessage(err, "Error");
     }

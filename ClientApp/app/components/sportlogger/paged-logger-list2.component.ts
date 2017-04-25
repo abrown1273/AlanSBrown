@@ -4,8 +4,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import * as _ from 'underscore';
-import { PagerService } from './services/pager.service'
-import { SkiDayService } from './services/sportlogger.service';
+import { PagerService } from '../services/pager.service'
+import { SkiDayService } from '../services/sportlogger.service';
+import { BlockUIService } from '../services/blockui.service';
 
 @Component({
     selector: 'paged-logger-list2',
@@ -21,21 +22,37 @@ export class PagedLoggerList2Component implements OnInit {
 
     constructor(private http: Http,
                 private pagerService: PagerService,
-                private skidayService: SkiDayService) {
+                private skidayService: SkiDayService,
+                private blockUIService: BlockUIService) {
     }
 
     ngOnInit() {
-        this.loading = true;
+        this.loadData();
+    }
+
+    loadData() {
+        this.blockUIService.blockUIEvent.emit({
+            value: true
+        });
+
         this.skidayService.getSkiDays()
             .subscribe(
                 data => this.allItems = data,
-                error => this.errorMsg = error,
+                error => this.logError(error),
                 () => {
                     this.setPage(1);
-                    this.loading = false;
-                    console.log("Complete");
+                    this.blockUIService.blockUIEvent.emit({
+                        value: false
+                    });
                 }
             );
+    }
+
+    logError(err) {
+        this.blockUIService.blockUIEvent.emit({
+            value: false
+        });
+        this.errorMsg = err;
     }
 
     setPage(page: number) {

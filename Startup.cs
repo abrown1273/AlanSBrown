@@ -29,6 +29,7 @@ namespace AlanBrown
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
         }
 
@@ -37,6 +38,8 @@ namespace AlanBrown
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Debug);
+
 
             if (env.IsDevelopment())
             {

@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { SkiDay } from './sportlogger.model';
-import { SkiDayService } from './services/sportlogger.service';
+import { SkiDay } from '../models/sportlogger.model';
+import { SkiDayService } from '../services/sportlogger.service';
+import { BlockUIService } from '../services/blockui.service';
 
 @Component({
     selector: 'logger-list',
@@ -11,8 +12,10 @@ export class LoggerListComponent implements OnInit {
     public loading: boolean;
     private errorMsg: string;
     public orderResultsBy: string = "-skiDate";
+    public orderDirection: string = "-";
 
-    constructor(private service: SkiDayService) {
+    constructor(private service: SkiDayService,
+            private blockUIService: BlockUIService) {
         
     }
 
@@ -21,16 +24,28 @@ export class LoggerListComponent implements OnInit {
     }
 
     loadData() {
-        this.loading = true;
+        this.blockUIService.blockUIEvent.emit({
+            value: true
+        });
+
         this.service.getSkiDays()
             .subscribe(
                 resp => this.skidays = resp,
-                error => this.errorMsg = error,
+                error => this.logError(error),
                 () => {
                     console.log("Data load complete");
-                    this.loading = false;
+                    this.blockUIService.blockUIEvent.emit({
+                        value: false
+                    });
                 }
             );
+    }
+
+    logError(err) {
+        this.blockUIService.blockUIEvent.emit({
+            value: false
+        });
+        this.errorMsg = err;
     }
 
     fieldChange(optionValue) {
