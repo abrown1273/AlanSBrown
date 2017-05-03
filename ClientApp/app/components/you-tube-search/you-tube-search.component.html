@@ -1,0 +1,27 @@
+<h2>YouTube Search</h2>
+<img style="float: right;"
+     *ngIf="loading"
+     src='/images/loading-spinner-grey.gif' />
+<hr />
+
+<p>This component demonstrates a You-Tube as-you-type search component.</p>
+
+
+<div class="container-fluid">
+    <div class="col-sm-5">
+        <div class="row">
+            <div class="input-group input-group-lg col-md-12">
+                <app-search-box (loading)="loading = $event"
+                                (results)="updateResults($event)">
+                </app-search-box>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="row">
+            <app-search-result *ngFor="let result of results"
+                                [result]="result">
+            </app-search-result>
+        </div>
+    </div>
+</div>

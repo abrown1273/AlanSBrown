@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, Inject, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -20,9 +20,6 @@ export interface PagedResponse<T> {
 
 })
 export class PagedLoggerListComponent implements OnInit {
-    public skiDayUrl: string = 'https://sportlogger.azurewebsites.net/api/PagedSkiDayApi/';
-    //public skiDayUrl: string = 'https://localhost:44382/api/PagedSkiDayApi/';
-
     public loading: boolean;
     private errorMsg: string;
 
@@ -32,7 +29,9 @@ export class PagedLoggerListComponent implements OnInit {
 
     constructor(private http: Http,
                 private service: SkiDayService,
-                private blockUIService: BlockUIService) {
+                private blockUIService: BlockUIService,
+                @Inject('API_URL') private apiUrl: string) {
+
     }
 
     ngOnInit() {
@@ -44,7 +43,7 @@ export class PagedLoggerListComponent implements OnInit {
             value: true
         });
 
-        this.data = this.http.get(this.skiDayUrl + p + "/10")
+        this.data = this.http.get(this.apiUrl + "paged/" + p + "/10")
             .do((res: any) => {
                 this.total = res.json().total;
                 this.page = p;
