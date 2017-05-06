@@ -7,6 +7,7 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/090e6497-7e66-4afe-8790-7d5243a3d7f3/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/AlanSBrown</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="3.3.7" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
