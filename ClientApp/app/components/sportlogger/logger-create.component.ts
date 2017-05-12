@@ -40,11 +40,11 @@ export class LoggerCreateComponent implements OnInit {
         this.sdayForm = this.formBuilder.group({
             skiDate: [null, Validators.required],
             resort: [null, Validators.required],
-            vertical: [null, [Validators.required, Validators.maxLength(5)]],
+            vertical: [null, [Validators.required]],
             partners: [null, Validators.required],
             newsnow24: ['0', [Validators.required, Validators.pattern('^[0-9]+'), Validators.maxLength(2)]],
             newsnow72: ['0', [Validators.required, Validators.pattern('^[0-9]+'), Validators.maxLength(2)]],
-            temperature: ['0', [Validators.required, Validators.pattern('^[0-9]+'), Validators.maxLength(4)]],
+            temperature: ['0', [Validators.required, Validators.maxLength(4)]],
             comments: [null]
         });
 
